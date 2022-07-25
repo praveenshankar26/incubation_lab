@@ -1,0 +1,124 @@
+{
+
+    "ingest-actives":
+        {
+            "source":
+                {
+                "file_location" : "s3://praveen-s3-landingzone/datasets/actives.parquet",
+                "file_format" : "parquet"
+                },
+            "destination":
+                {
+                "file_location" : "s3://praveen-s3-rawzone/Datasets/Actives/actives.parquet",
+                "file_format" : "parquet"
+                },
+
+            "masked_columns" : [],
+            "transformation_columns" : [],
+            "partition_columns" : []
+
+        },
+
+	"processed-actives":
+	{
+		"source":
+		{
+		"file_location" : "s3://praveen-s3-rawzone/Datasets/Actives/actives.parquet",
+		"file_format" : "parquet"
+		},
+		"destination":
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Transformed_Datasets/actives",
+		"file_format" : "parquet"
+		},
+		"masked_columns" : ["advertising_id", "user_id"],
+		"transformation_columns" :{
+			"user_latitude":"DecimalType,7",
+			"user_longitude":"DecimalType,7",
+			"location_source":"StringType"
+		},
+		"partition_columns" : ["month","date"]
+
+
+	},
+
+	"ingest-Viewership" :
+	{
+		"source" :
+		{
+		"file_location" : "s3://praveen-s3-landingzone/datasets/viewership.parquet",
+		"file_format" : "parquet"
+		},
+		"destination" :
+		{
+		"file_location" : "s3://praveen-s3-rawzone/Datasets/Viewership/viewership.parquet",
+		"file_format" : "parquet"
+		},
+		"masked_columns" : [],
+		"transformation_columns" : [],
+		"partition_columns" : []
+ 	
+	},
+	
+	"processed-Vieweship" :
+	{
+		"source" :
+		{
+		"file_location" : "s3://praveen-s3-rawzone/Datasets/Viewership/viewership.parquet",
+		"file_format" : "parquet"
+		},
+		"destination" : 
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Transformed_Datasets/viewership",
+		"file_format" : "parquet"
+		},
+		"masked_columns" : ["advertising_id"],
+		"transformed_columns" : {
+                "user_lat":"DecimalType,7",
+                "user_long":"DecimalType,7",
+                "location_source":"StringType"
+            },
+		"partition_columns" : ["month","date"]
+
+	},
+
+	"lookup-Actives" :
+	{
+		"raw_source" :
+		{
+		"file_location" : "s3://praveen-s3-rawzone/Datasets/Actives/"
+		},
+
+		"staging_source" :
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Lookup_Dataset/actives/"
+		},
+
+		"destination" : 
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Lookup_Dataset/actives/"
+		},
+
+		"pii-cols" : ["advertising_id", "user_id"]
+	}
+
+	"lookup-Viewership" :
+	{
+		"raw_source" :
+		{
+		"file_location" : "s3://praveen-s3-rawzone/Datasets/Viewership/"
+		},
+
+		"staging_source" :
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Lookup_Dataset/viewership/"
+		},
+
+		"destination" : 
+		{
+		"file_location" : "s3://praveen-s3-stagingzone/Lookup_Dataset/viewership/"
+		},
+
+		"pii-cols" : ["advertising_id"]
+	}
+}
